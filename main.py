@@ -36,6 +36,7 @@ def sign_up():
     password = input("Enter your Password (no spaces): ")
     ...
 
+    ...
 
 def main():
     choice = menu1()
