@@ -3,11 +3,11 @@
 
 
 class Book:
-    def __init__(self, isbn, number_of_pages, title, author_name):
-        self.isbn = isbn
-        self.number_of_pages = number_of_pages
-        self.title = title
-        self.author_name = author_name
+    def __init__(self):
+        self._isbn = 0
+        self._number_of_pages = 0
+        self._title = ""
+        self._author_name = ""
 
 
 

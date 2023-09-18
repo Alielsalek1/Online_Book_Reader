@@ -2,12 +2,13 @@
 
 
 class User:
-    def __init__(self, user_name, name, password, email):
-        self.name = name
-        self.email = email
-        self.user_name = user_name
-        self.password = password
-        self.current_books = []
+    def __init__(self):
+        self._name = ""
+        self._email = ""
+        self._user_name = ""
+        self._password = ""
+        self._current_books = []
+
 
     ...
 
