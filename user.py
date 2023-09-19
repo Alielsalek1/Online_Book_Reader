@@ -29,6 +29,10 @@ class User:
     def password(self, value):
         self._password = value
 
+    def view_profile(self):
+        print(f"\nName: {self.name}")
+        print(f"User name: {self.username}\n")
+
 def main():
     ...
 

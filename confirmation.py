@@ -38,6 +38,18 @@ def verify_password(password):
         password = input("Please enter your password without whitespaces:\n")
     return password
 
+# verifying if the entered username is registered for login
+def check_username(name, current_hash_map):
+    while current_hash_map.users.get(name) is None:
+        name = input("Please Enter an existing username:\n").strip()
+    return name
+
+# verifying if the entered password matches the user password
+def check_password(name, passa, current_hash_map):
+    while passa != current_hash_map.users[name].password:
+        passa = input("Password is incorrect: \n").strip()
+    return passa
+
 def main():
     ...
 
