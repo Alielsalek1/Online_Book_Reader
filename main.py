@@ -7,7 +7,7 @@ def menu1():
     print("Menu:")
     print("         1: Login")
     print("         2: Sign Up")
-    return int(check_range(1, 2, input("Enter a number in range 1 - 2 ")))
+    return int(check_range(1, 2, input("Enter a number in range 1 - 2: ")))
 
 # determine if you want to sign up as an admin or as a normal user
 def admin_or_user():
@@ -16,20 +16,23 @@ def admin_or_user():
     print("         2: User")
     return int(check_range(1, 2, input("Enter a number in range 1 - 2 ")))
 
+def go(curr_hash_map):
+    name = check_username(input("Enter your user name: "), curr_hash_map)
+    check_password(name, input("Enter your Password: "), curr_hash_map)
+    return name
+
 def log_in():
     # know if the user signing up is a normal user or an admin
     user_type = admin_or_user()
 
     # admin log in
     if user_type == 1:
-        name = check_username(input("Enter your user name: "), admins)
-        check_password(name, input("Enter your Password: "), admins)
+        name = go(admins)
         admin_panel(admins[name])
-
     # normal user log in
     else:
-        name = check_username(input("Enter your user name: "), users)
-        check_password(name, input("Enter your Password: "), users)
+        name = go(users)
+        normal_user_panel(users[name])
 
 def sign_up():
     # know if the user signing up is a normal user or an admin
@@ -62,10 +65,25 @@ def admin_panel(admin):
     choice = admin_menu()
     if choice == 1:
         admin.view_profile()
+    elif choice == 2:
+        ...
+
+def normal_user_menu():
+    print("Menu: ")
+    print("         1: View Profile")
+    print("         2: Read a new Book")
+    print("         3: Continue Reading")
+    print("         4: Logout")
+    return int(check_range(1, 4, input("Enter a number in range 1 - 4: ")))
+
+def normal_user_panel(user):
+    choice = normal_user_menu()
+    if choice == 1:
+        user.view_profile()
+    elif choice == 2:
+        ...
     elif choice == 3:
         ...
-    else:
-        main()
 
 def system_run():
     choice = menu1()

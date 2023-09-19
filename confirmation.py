@@ -21,14 +21,20 @@ def verify_name(name):
         name = input("Please enter your name using english letters only:\n")
     return name
 
+# check if the username is already taken by another users
+def check_taken_username(username):
+    if username.strip() in taken_user_names:
+        username = input("Please enter another username as this one is taken:\n")
+    return username
+
 # verifying the username to start with a letter and continue with letters and digits only
 def verify_username(username):
+    check_taken_username(username)
     pattern = re.compile(r"^[a-zA-Z][0-9a-zA-z]*$")
     while not pattern.match(username.strip()):
         username = input("Please enter your username with no spaces,"
                          " starting with letters and no special characters:\n")
-        if username.strip() in taken_user_names:
-            username = input("Please enter another username as this one is taken:\n")
+        check_taken_username(username)
     return username
 
 # verifying the password to not contain whitespaces at all
@@ -39,10 +45,10 @@ def verify_password(password):
     return password
 
 # verifying if the entered username is registered for login
-def check_username(name, current_hash_map):
-    while current_hash_map.users.get(name) is None:
-        name = input("Please Enter an existing username:\n").strip()
-    return name
+def check_username(username, current_hash_map):
+    while current_hash_map.users.get(username) is None:
+        username = input("Please Enter an existing username:\n").strip()
+    return username
 
 # verifying if the entered password matches the user password
 def check_password(name, passa, current_hash_map):
