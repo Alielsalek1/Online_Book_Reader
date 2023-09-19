@@ -1,7 +1,3 @@
-
-
-
-
 class Book:
     def __init__(self):
         self._isbn = 0
@@ -9,14 +5,8 @@ class Book:
         self._title = ""
         self._author_name = ""
 
-
-
 def main():
     ...
-
-
-
-
 
 if __name__ == "__main__":
     main()
