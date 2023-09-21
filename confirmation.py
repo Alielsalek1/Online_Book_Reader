@@ -1,5 +1,4 @@
 import re
-from globals import *
 
 # check if the given string is all letters
 def is_not_digit(number):
@@ -21,40 +20,12 @@ def verify_name(name):
         name = input("Please enter your name using english letters only:\n")
     return name
 
-# check if the username is already taken by another users
-def check_taken_username(username):
-    if username.strip() in taken_user_names:
-        username = input("Please enter another username as this one is taken:\n")
-    return username
-
-# verifying the username to start with a letter and continue with letters and digits only
-def verify_username(username):
-    check_taken_username(username)
-    pattern = re.compile(r"^[a-zA-Z][0-9a-zA-z]*$")
-    while not pattern.match(username.strip()):
-        username = input("Please enter your username with no spaces,"
-                         " starting with letters and no special characters:\n")
-        check_taken_username(username)
-    return username
-
 # verifying the password to not contain whitespaces at all
 def verify_password(password):
     pattern = re.compile(r"^.*\s+.*$")
     while pattern.match(password.strip()):
         password = input("Please enter your password without whitespaces:\n")
     return password
-
-# verifying if the entered username is registered for login
-def check_username(username, current_hash_map):
-    while current_hash_map.users.get(username) is None:
-        username = input("Please Enter an existing username:\n").strip()
-    return username
-
-# verifying if the entered password matches the user password
-def check_password(name, passa, current_hash_map):
-    while passa != current_hash_map.users[name].password:
-        passa = input("Password is incorrect: \n").strip()
-    return passa
 
 def main():
     ...

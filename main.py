@@ -1,6 +1,4 @@
-from confirmation import *
-from admin import *
-from globals import *
+from user import *
 
 # choose either to login or to sign up
 def menu1():
@@ -16,43 +14,23 @@ def admin_or_user():
     print("         2: User")
     return int(check_range(1, 2, input("Enter a number in range 1 - 2 ")))
 
-def go(curr_hash_map):
-    name = check_username(input("Enter your user name: "), curr_hash_map)
-    check_password(name, input("Enter your Password: "), curr_hash_map)
-    return name
-
 def log_in():
     # know if the user signing up is a normal user or an admin
     user_type = admin_or_user()
 
     # admin log in
     if user_type == 1:
-        name = go(admins)
-        admin_panel(admins[name])
+        name = User.is_valid_user(User.admins)
+        admin_panel(User.admins[name])
+
     # normal user log in
     else:
-        name = go(users)
-        normal_user_panel(users[name])
+        name = User.is_valid_user(User.users)
+        normal_user_panel(User.users[name])
 
 def sign_up():
     # know if the user signing up is a normal user or an admin
-    user_type = admin_or_user()
-    curr_user = User()
-
-    # set values to class user using setter
-    curr_user.name = verify_name(input("Enter your Name: ")).strip()
-
-    # adding a username and appending it to a hash set to prevent username repetition
-    curr_user.username = verify_username(input("Enter you Username (no spaces): "))
-    taken_user_names.add(curr_user.username)
-
-    curr_user.password = verify_password(input("Enter your Password (no spaces): "))
-
-    # if the user is an admin(1) append him to admins else he is a normal user
-    if user_type == 1:
-        admins.add_user(curr_user)
-    else:
-        users.add_user(curr_user)
+    User.sign_up(admin_or_user())
 
 def admin_menu():
     print("Menu: ")
