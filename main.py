@@ -1,6 +1,5 @@
 from admin import *
 
-# choose either to login or to sign up
 def menu1():
     print("Menu:")
     print("         1: Login")

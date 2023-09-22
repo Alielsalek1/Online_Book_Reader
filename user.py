@@ -19,10 +19,10 @@ class User:
     users = UserSet()
     admins = UserSet()
 
-    def __init__(self):
-        self._name = ""
-        self._username = ""
-        self._password = ""
+    def __init__(self, name, username, passowrd):
+        self._name = name
+        self._username = username
+        self._password = passowrd
         self._current_books = []
 
     @property
@@ -55,8 +55,8 @@ class User:
 
     # take usernames so every username is unique
     @staticmethod
-    def take_username(curr_user):
-        User.taken_user_names.add(curr_user.username)
+    def take_username(username):
+        User.taken_user_names.add(username)
 
     @staticmethod
     # determine if you want to sign up as an admin or as a normal user
@@ -110,16 +110,16 @@ class User:
 
     @staticmethod
     def sign_up(user_type):
-        curr_user = User()
-
         # set values to class user using setter
-        curr_user.name = verify_name(input("Enter your Name: ")).strip()
+        name = verify_name(input("Enter your Name: ")).strip()
 
         # adding a username and appending it to a hash set to prevent username repetition
-        curr_user.username = User.verify_username(input("Enter you Username (no spaces): "))
-        User.take_username(curr_user)
+        username = User.verify_username(input("Enter you Username (no spaces): "))
+        User.take_username(username)
 
-        curr_user.password = verify_password(input("Enter your Password (no spaces): "))
+        password = verify_password(input("Enter your Password (no spaces): "))
+
+        curr_user = User(name, username, password)
 
         # if the user is an admin(1) append him to admins else he is a normal user
         if user_type == 1:
