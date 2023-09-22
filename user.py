@@ -49,10 +49,22 @@ class User:
     def password(self, value):
         self._password = value
 
+    def view_profile(self):
+        print(f"\nName: {self.name}")
+        print(f"User name: {self.username}\n")
+
     # take usernames so every username is unique
     @staticmethod
     def take_username(curr_user):
         User.taken_user_names.add(curr_user.username)
+
+    @staticmethod
+    # determine if you want to sign up as an admin or as a normal user
+    def admin_or_user():
+        print("Menu:")
+        print("         1: Admin")
+        print("         2: User")
+        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ")))
 
     # check if the username is already taken by another users
     @staticmethod
@@ -115,9 +127,14 @@ class User:
         else:
             User.users.add_user(curr_user)
 
-    def view_profile(self):
-        print(f"\nName: {self.name}")
-        print(f"User name: {self.username}\n")
+    @staticmethod
+    def view_normal_user_menu():
+        print("Menu: ")
+        print("         1: View Profile")
+        print("         2: Read a new Book")
+        print("         3: Continue Reading")
+        print("         4: Logout")
+        return int(check_range(1, 4, input("Enter a number in range 1 - 4: ")))
 
 def main():
     ...
