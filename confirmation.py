@@ -3,7 +3,7 @@ import re
 # verifying the input is all numbers
 def verify_num(number):
     while not number.isdigit():
-        number = input("Please Enter a number:\n").strip()
+        number = input("Please Enter a valid digit with no spaces:\n").strip()
     return number
 
 # check if a given integer is an integer and in range between 2 numbers
@@ -19,7 +19,7 @@ def check_range(minimum_val, maximum_val, number):
 def verify_name(name):
     pattern = re.compile(r"^[a-zA-Z\s'-]+$")
     while not pattern.match(name):
-        name = input("Please enter your name using english letters only:\n").strip()
+        name = input("Please enter the name using english letters only:\n").strip()
     return name
 
 # verifying the password to not contain whitespaces at all
