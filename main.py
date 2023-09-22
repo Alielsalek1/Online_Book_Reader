@@ -1,4 +1,5 @@
 from admin import *
+from book import *
 
 def menu1():
     print("Menu:")
@@ -24,27 +25,25 @@ def sign_up():
     # know if the user signing up is a normal user or an admin
     User.sign_up(User.admin_or_user())
 
-def admin_menu():
-    return Admin.view_admin_menu()
-
 def admin_panel(admin):
-    choice = admin_menu()
-    if choice == 1:
-        admin.view_profile()
-    elif choice == 2:
-        ...
-
-def normal_user_menu():
-    return User.view_normal_user_menu()
+    while True:
+        choice = Admin.view_admin_menu()
+        if choice == 1:
+            admin.view_profile()
+        elif choice == 2:
+            Book.add_book()
+        else:
+            break
 
 def normal_user_panel(user):
-    choice = normal_user_menu()
-    if choice == 1:
-        user.view_profile()
-    elif choice == 2:
-        ...
-    elif choice == 3:
-        ...
+    while True:
+        choice = User.view_normal_user_menu()
+        if choice == 1:
+            user.view_profile()
+        elif choice == 2:
+            ...
+        elif choice == 3:
+            break
 
 def system_run():
     choice = menu1()

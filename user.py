@@ -1,7 +1,6 @@
 from confirmation import *
 
 class User:
-    # users either admins or normal users
     class UserSet:
         def __init__(self):
             self.users = {}
@@ -23,7 +22,7 @@ class User:
         self._name = name
         self._username = username
         self._password = passowrd
-        self._current_books = []
+        self._current_books = [""]
 
     @property
     def name(self):
@@ -64,27 +63,20 @@ class User:
         print("Menu:")
         print("         1: Admin")
         print("         2: User")
-        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ")))
-
-    # check if the username is already taken by another users
-    @staticmethod
-    def is_available_username(username):
-        if username.strip() in User.taken_user_names:
-            username = input("Please enter another username as this one is taken:\n")
-        return username
+        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ").strip()))
 
     @staticmethod
     # verifying the username to start with a letter and continue with letters and digits only
     def verify_username(username):
         # user maybe right according to regex but taken, so we check before the while loop
-        User.is_available_username(username)
+        is_available(username, User.taken_user_names)
 
         pattern = re.compile(r"^[a-zA-Z][0-9a-zA-z]*$")
-        while not pattern.match(username.strip()):
-            # check if the
+        while not pattern.match(username):
+            # the username is doesn't match the pattern
             username = input("Please enter your username with no spaces,"
-                             " starting with letters and no special characters:\n")
-            User.is_available_username(username)
+                             " starting with letters and no special characters:\n").strip()
+            is_available(username, User.taken_user_names)
         return username
 
     @staticmethod
@@ -104,21 +96,17 @@ class User:
     @staticmethod
     # check if username and password are in the list of admins or users
     def is_valid_user(curr_hash_map):
-        name = User.check_username(input("Enter your user name: "), curr_hash_map)
-        User.check_password(name, input("Enter your Password: "), curr_hash_map)
+        name = User.check_username(input("Enter your user name: ").strip(), curr_hash_map)
+        User.check_password(name, input("Enter your Password: ").strip(), curr_hash_map)
         return name
 
     @staticmethod
     def sign_up(user_type):
-        # set values to class user using setter
-        name = verify_name(input("Enter your Name: ")).strip()
-
-        # adding a username and appending it to a hash set to prevent username repetition
-        username = User.verify_username(input("Enter you Username (no spaces): "))
+        # inputs and adding the username to its hash-set to be unique
+        name = verify_name(input("Enter your Name: ").strip())
+        username = User.verify_username(input("Enter you Username (no spaces): ").strip())
         User.take_username(username)
-
-        password = verify_password(input("Enter your Password (no spaces): "))
-
+        password = verify_password(input("Enter your Password (no spaces): ").strip())
         curr_user = User(name, username, password)
 
         # if the user is an admin(1) append him to admins else he is a normal user
@@ -134,7 +122,7 @@ class User:
         print("         2: Read a new Book")
         print("         3: Continue Reading")
         print("         4: Logout")
-        return int(check_range(1, 4, input("Enter a number in range 1 - 4: ")))
+        return int(check_range(1, 4, input("Enter a number in range 1 - 4: ").strip()))
 
 def main():
     ...
