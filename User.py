@@ -1,4 +1,5 @@
-from Book import *
+from ReadingSession import *
+from UserView import *
 
 class User:
     class UserSet:
@@ -63,19 +64,19 @@ class User:
 
     def normal_user_panel(self):
         while True:
-            choice = User.view_normal_user_menu()
+            choice = UserView.view_normal_user_menu()
             if choice == 1:
                 self.view_profile()
             elif choice == 2:
-                self.read_a_new_book()
+                ReadingSession.read_a_new_book(self)
             elif choice == 3:
-                self.continue_reading()
+                ReadingSession.continue_reading(self)
             else:
                 break
 
     def admin_panel(self):
         while True:
-            choice = self.view_admin_menu()
+            choice = UserView.view_admin_menu()
             if choice == 1:
                 self.view_profile()
             elif choice == 2:
@@ -168,68 +169,20 @@ class User:
             name = cls.is_valid_user(cls.users)
             cls.normal_user_panel(cls.users[name])
 
-    @staticmethod
-    def view_normal_user_menu():
-        print("\nMenu: ")
-        print("         1: View Profile")
-        print("         2: Read a new Book")
-        print("         3: Continue Reading")
-        print("         4: Logout")
-        return int(check_range(1, 4, input("Enter a number in range 1 - 4: ").strip()))
+    def list_available_new_books(self):
+        cnt = 1
+        available_books = []
 
-    @staticmethod
-    def view_admin_menu():
-        print("\nMenu: ")
-        print("         1: View Profile")
-        print("         2: Add a Book")
-        print("         3: Logout")
-        return int(check_range(1, 3, input("Enter a number in range 1 - 3: ").strip()))
+        # iterate on all the books and pick the user didn't start
+        for book_title in Book.books.books.keys():
 
-    # check if you read all books or your history is empty
-    def cannot_read(self, cmp):
-        if len(self.current_books.keys()) == cmp:
-            return True
-        return False
+            # check that the book is not in the user history
+            if book_title not in self.current_books.keys():
+                available_books.append(book_title)
+                print(f"{cnt} - {book_title}")
+                cnt += 1
 
-    def choose_and_read_book(self, available_books, new):
-        # choose the book that you want to start reading
-        choice = verify_num(input("Enter the number of the Book you want to read: ").strip())
-        selected_book_name = available_books[int(choice) - int(1)]
-
-        # if you are reading a new book set it to page 1
-        if new == 1:
-            User.modify_books(self, selected_book_name, 0)
-
-        # start reading your book
-        Book.read_book(self, selected_book_name)
-
-    def read_a_new_book(self):
-        # check if user has all books in history and no books to open
-        if self.cannot_read(len(Book.books.books.keys())):
-            return print("Looks like you have all books opened and can't read a new book")
-
-        # list new books to read
-        print("Our current book collection:")
-        available_books = Book.list_available_new_books(self)
-
-        # choose and read a book
-        self.choose_and_read_book(available_books, int(1))
-
-    def continue_reading(self):
-        # check if user doesn't have a book to continue
-        if self.cannot_read(0):
-            return print("no books to continue reading")
-
-        # making a list of book titles (keys)
-        available_books = list(self.current_books.keys())
-
-        # list books to complete reading
-        print("Books to continue reading: ")
-        for book_num in range(len(available_books)):
-            print(f"{book_num + 1} - {available_books[book_num]}")
-
-        # choose and read a book
-        self.choose_and_read_book(available_books, int(0))
+        return available_books
 
 def main():
     pass
