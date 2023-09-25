@@ -1,4 +1,4 @@
-from user import *
+from User import *
 
 def menu1():
     print("\nMenu:")

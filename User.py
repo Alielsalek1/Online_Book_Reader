@@ -1,4 +1,4 @@
-from book import *
+from Book import *
 
 class User:
     class UserSet:
@@ -61,25 +61,23 @@ class User:
     def take_username(cls, username):
         cls.taken_user_names.add(username)
 
-    @classmethod
-    def normal_user_panel(cls, user):
+    def normal_user_panel(self):
         while True:
             choice = User.view_normal_user_menu()
             if choice == 1:
-                cls.view_profile(user)
+                self.view_profile()
             elif choice == 2:
-                cls.read_a_new_book(user)
+                self.read_a_new_book()
             elif choice == 3:
-                cls.continue_reading(user)
+                self.continue_reading()
             else:
                 break
 
-    @classmethod
-    def admin_panel(cls, admin):
+    def admin_panel(self):
         while True:
-            choice = cls.view_admin_menu()
+            choice = self.view_admin_menu()
             if choice == 1:
-                admin.view_profile()
+                self.view_profile()
             elif choice == 2:
                 Book.add_book()
             else:
@@ -93,10 +91,9 @@ class User:
         print("         2: User")
         return int(check_range(1, 2, input("Enter a number in range 1 - 2 ").strip()))
 
-    @staticmethod
-    def view_profile(user):
-        print(f"\nName: {user.name}")
-        print(f"User name: {user.username}")
+    def view_profile(self):
+        print(f"\nName: {self.name}")
+        print(f"User name: {self.username}")
 
     @classmethod
     # verifying the username to start with a letter and continue with letters and digits only
@@ -136,13 +133,12 @@ class User:
         cls.check_password(name, input("Enter your Password: ").strip(), curr_hash_map)
         return name
 
-    @classmethod
     # if the user is an admin(1) append him to admins else he is a normal user
-    def add_user(cls, curr_user, user_type):
+    def add_user(self, user_type):
         if user_type == 1:
-            cls.admins.add_user(curr_user)
+            self.admins.add_user(self)
         else:
-            cls.users.add_user(curr_user)
+            self.users.add_user(self)
 
     @classmethod
     def sign_up(cls, user_type):
@@ -189,47 +185,43 @@ class User:
         print("         3: Logout")
         return int(check_range(1, 3, input("Enter a number in range 1 - 3: ").strip()))
 
-    @staticmethod
     # check if you read all books or your history is empty
-    def cannot_read(user, cmp):
-        if len(user.current_books.keys()) == cmp:
+    def cannot_read(self, cmp):
+        if len(self.current_books.keys()) == cmp:
             return True
         return False
 
-    @staticmethod
-    def choose_and_read_book(available_books, user, new):
+    def choose_and_read_book(self, available_books, new):
         # choose the book that you want to start reading
         choice = verify_num(input("Enter the number of the Book you want to read: ").strip())
         selected_book_name = available_books[int(choice) - int(1)]
 
         # if you are reading a new book set it to page 1
         if new == 1:
-            User.modify_books(user, selected_book_name, 0)
+            User.modify_books(self, selected_book_name, 0)
 
         # start reading your book
-        Book.read_book(user, selected_book_name)
+        Book.read_book(self, selected_book_name)
 
-    @classmethod
-    def read_a_new_book(cls, user):
+    def read_a_new_book(self):
         # check if user has all books in history and no books to open
-        if cls.cannot_read(user, len(Book.books.books.keys())):
+        if self.cannot_read(len(Book.books.books.keys())):
             return print("Looks like you have all books opened and can't read a new book")
 
         # list new books to read
         print("Our current book collection:")
-        available_books = Book.list_available_new_books(user)
+        available_books = Book.list_available_new_books(self)
 
         # choose and read a book
-        cls.choose_and_read_book(available_books, user, int(1))
+        self.choose_and_read_book(available_books, int(1))
 
-    @classmethod
-    def continue_reading(cls, user):
+    def continue_reading(self):
         # check if user doesn't have a book to continue
-        if cls.cannot_read(user, 0):
+        if self.cannot_read(0):
             return print("no books to continue reading")
 
         # making a list of book titles (keys)
-        available_books = list(user.current_books.keys())
+        available_books = list(self.current_books.keys())
 
         # list books to complete reading
         print("Books to continue reading: ")
@@ -237,7 +229,7 @@ class User:
             print(f"{book_num + 1} - {available_books[book_num]}")
 
         # choose and read a book
-        cls.choose_and_read_book(available_books, user, 0)
+        self.choose_and_read_book(available_books, int(0))
 
 def main():
     pass
