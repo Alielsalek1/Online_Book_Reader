@@ -68,27 +68,36 @@ class Book:
     # verify the ISBN is digits only and unique
     def verify_isbn(cls, isbn):
         # ISBN might be digits(True) but not unique, so we confirm before looping
-        is_available(isbn, cls.taken_isbns)
-
+        isbn = is_available(isbn, cls.taken_isbns)
+        if pressed_zero(isbn):
+            return str(0)
         while not isbn.isdigit():
-            isbn = input("Please Enter a valid ISBN with digits only & no spaces:\n").strip()
+            isbn = input("Please Enter a valid ISBN with digits only & no spaces or 0 to cancel:\n").strip()
 
             # check if the ISBN is unique
-            is_available(isbn, cls.taken_isbns)
+            isbn = is_available(isbn, cls.taken_isbns)
+            if pressed_zero(isbn):
+                return str(0)
 
         return isbn
 
     @classmethod
     # verify that a book title is letters only and unique
     def verify_title(cls, title):
+        if pressed_zero(title):
+            return str(0)
+
         # verify title input as letters only as it might be false regex pattern, but it will be unique
-        name = verify_name(title)
+        title = verify_name(title)
+        if pressed_zero(title):
+            return str(0)
 
         # checking that the title letters only and also unique
-        while name in cls.taken_titles:
-            name = verify_name(title)
-            is_available(title, cls.taken_titles)
-
+        while title in cls.taken_titles:
+            title = verify_name(title)
+            title = is_available(title, cls.taken_titles)
+            if pressed_zero(title):
+                return str(0)
         return title
 
     @staticmethod
@@ -100,17 +109,27 @@ class Book:
     @classmethod
     def add_book(cls):
         # adding ISBN & Title to hash-set to be unique
-        isbn = cls.verify_isbn(input("Enter ISBN (no spaces): ").strip())
-        cls.taken_isbns.add(isbn)
-        title = cls.verify_title(input("Enter Title: ").strip())
-        cls.taken_titles.add(title)
+        isbn = cls.verify_isbn(input("Enter ISBN (no spaces) or 0 to cancel: ").strip())
+        if pressed_zero(isbn):
+            return
 
-        author_name = verify_name(input("Enter Author Name: ").strip())
-        number_of_pages = verify_num(input("Enter number of pages (no spaces): ").strip())
+        title = cls.verify_title(input("Enter Title or 0 to cancel: ").strip())
+        if pressed_zero(title):
+            return
+
+        author_name = verify_name(input("Enter Author Name or 0 to cancel: ").strip())
+        if pressed_zero(author_name):
+            return
+        number_of_pages = verify_num(input("Enter number of pages (no spaces) or 0 to cancel: ").strip())
+        if pressed_zero(number_of_pages):
+            return
 
         book_itself = [""] * int(number_of_pages)
         cls.pages_input(book_itself)
 
+        # make the ISBN & title unique
+        cls.taken_titles.add(title)
+        cls.taken_isbns.add(isbn)
         # constructing the book and adding it to the dictionary of books
         book = Book(isbn, number_of_pages, title, author_name, book_itself)
         Book.books.add_book(book)
