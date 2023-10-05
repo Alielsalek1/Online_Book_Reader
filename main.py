@@ -6,7 +6,7 @@ def system_run():
     if choice == 1:
         User.log_in()
     else:
-        User.sign_up(User.admin_or_user())
+        User.sign_up(UserView.admin_or_user())
 
 def main():
     while True:

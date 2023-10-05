@@ -1,4 +1,4 @@
-from Confirmation import *
+from confirmations import *
 
 class Book:
     class BookSet:

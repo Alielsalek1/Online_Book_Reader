@@ -9,6 +9,14 @@ class UserView:
         return int(check_range(1, 2, input("Enter a number in range 1 - 2: ")))
 
     @staticmethod
+    # determine if you want to sign up as an admin or as a normal user
+    def admin_or_user():
+        print("\nMenu:")
+        print("         1: Admin")
+        print("         2: User")
+        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ").strip()))
+
+    @staticmethod
     def view_normal_user_menu():
         print("\nMenu: ")
         print("         1: View Profile")

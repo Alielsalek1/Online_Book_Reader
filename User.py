@@ -84,14 +84,6 @@ class User:
             else:
                 break
 
-    @staticmethod
-    # determine if you want to sign up as an admin or as a normal user
-    def admin_or_user():
-        print("\nMenu:")
-        print("         1: Admin")
-        print("         2: User")
-        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ").strip()))
-
     def view_profile(self):
         print(f"\nName: {self.name}")
         print(f"User name: {self.username}")
@@ -100,17 +92,18 @@ class User:
     # verifying the username to start with a letter and continue with letters and digits only
     def verify_username(cls, username):
         # user maybe right according to regex but taken, so we check before the while loop
-        is_available(username, cls.taken_user_names)
-
+        username = is_available(username, cls.taken_user_names)
+        if pressed_zero(username):
+            return str(0)
         pattern = re.compile(r"^[a-zA-Z][0-9a-zA-z]*$")
         while not pattern.match(username):
-            # the username is doesn't match the pattern
+            # the username doesn't match the pattern
             username = input("Please enter your username with no spaces,"
-                             " starting with letters and no special characters:\n").strip()
-
-            # check if username is unique
-            is_available(username, cls.taken_user_names)
-
+                             " starting with letters and no special characters: or 0 to cancel\n").strip()
+            # check if the username is unique
+            username = is_available(username, cls.taken_user_names)
+            if pressed_zero(username):
+                return str(0)
         return username
 
     @staticmethod
@@ -122,10 +115,10 @@ class User:
 
     @staticmethod
     # verifying if the entered password matches the user password
-    def check_password(name, passa, current_hash_map):
-        while passa != current_hash_map.users[name].password:
-            passa = input("Password is incorrect: \n").strip()
-        return passa
+    def check_password(name, password, current_hash_map):
+        while password != current_hash_map.users[name].password:
+            password = input("Password is incorrect: \n").strip()
+        return password
 
     @classmethod
     # check if username and password are in the list of admins or users
@@ -143,21 +136,24 @@ class User:
 
     @classmethod
     def sign_up(cls, user_type):
-        name = verify_name(input("Enter your Name: ").strip())
-
+        name = verify_name(input("Enter your Name or 0 to cancel: ").strip())
+        if pressed_zero(name):
+            return
+        username = cls.verify_username(input("Enter you Username (no spaces) or 0 to cancel: ").strip())
+        if pressed_zero(username):
+            return
+        password = verify_password(input("Enter your Password (no spaces) or 0 to cancel: ").strip())
+        if pressed_zero(password):
+            return
         # adding username to hash-map to be unique
-        username = cls.verify_username(input("Enter you Username (no spaces): ").strip())
         cls.take_username(username)
-
-        password = verify_password(input("Enter your Password (no spaces): ").strip())
-
         # adding the user
         cls.add_user(cls(name, username, password), user_type)
 
     @classmethod
     def log_in(cls):
         # know if the user signing up is a normal user or an admin
-        user_type = cls.admin_or_user()
+        user_type = UserView.admin_or_user()
 
         # admin log in
         if user_type == 1:
