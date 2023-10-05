@@ -14,7 +14,8 @@ class UserView:
         print("\nMenu:")
         print("         1: Admin")
         print("         2: User")
-        return int(check_range(1, 2, input("Enter a number in range 1 - 2 ").strip()))
+        print("         3: Cancel")
+        return int(check_range(1, 3, input("Enter a number in range 1 - 3 ").strip()))
 
     @staticmethod
     def view_normal_user_menu():

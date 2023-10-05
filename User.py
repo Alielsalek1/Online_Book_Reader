@@ -109,22 +109,34 @@ class User:
     @staticmethod
     # verifying if the entered username is registered for login
     def check_username(username, current_hash_map):
+        if pressed_zero(username):
+            return str(0)
         while current_hash_map.users.get(username) is None:
-            username = input("Please Enter an existing username:\n").strip()
+            username = input("Please Enter an existing username or 0 to cancel:\n").strip()
+            if pressed_zero(username):
+                return str(0)
         return username
 
     @staticmethod
     # verifying if the entered password matches the user password
     def check_password(name, password, current_hash_map):
+        if pressed_zero(password):
+            return str(0)
         while password != current_hash_map.users[name].password:
-            password = input("Password is incorrect: \n").strip()
+            password = input("Password is incorrect or 0 to cancel: \n").strip()
+            if pressed_zero(password):
+                return str(0)
         return password
 
     @classmethod
     # check if username and password are in the list of admins or users
     def is_valid_user(cls, curr_hash_map):
-        name = cls.check_username(input("Enter your user name: ").strip(), curr_hash_map)
-        cls.check_password(name, input("Enter your Password: ").strip(), curr_hash_map)
+        name = cls.check_username(input("Enter your username or 0 to cancel: ").strip(), curr_hash_map)
+        if pressed_zero(name):
+            return str(0)
+        password = cls.check_password(name, input("Enter your Password or 0 to cancel: ").strip(), curr_hash_map)
+        if pressed_zero(password):
+            return str(0)
         return name
 
     # if the user is an admin(1) append him to admins else he is a normal user
@@ -136,6 +148,8 @@ class User:
 
     @classmethod
     def sign_up(cls, user_type):
+        if user_type == int(3):
+            return
         name = verify_name(input("Enter your Name or 0 to cancel: ").strip())
         if pressed_zero(name):
             return
@@ -156,14 +170,20 @@ class User:
         user_type = UserView.admin_or_user()
 
         # admin log in
-        if user_type == 1:
+        if user_type == int(1):
             name = cls.is_valid_user(cls.admins)
+            if pressed_zero(name):
+                return
             cls.admin_panel(cls.admins[name])
 
         # normal user log in
-        else:
+        elif user_type == int(2):
             name = cls.is_valid_user(cls.users)
+            if pressed_zero(name):
+                return
             cls.normal_user_panel(cls.users[name])
+        else:
+            return
 
     def list_available_new_books(self):
         cnt = 1
